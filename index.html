@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vem Saborear</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFD700; /* Amarelo */
+            color: #333;
+        }
+        header {
+            background-color: #FF0000; /* Vermelho */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        nav {
+            background-color: #FF4500;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .cardapio, .pedido {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .cardapio h2, .pedido h2 {
+            color: #FF0000;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #FFD700;
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #FF0000;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #CC0000;
+        }
+        footer {
+            background-color: #FF0000;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vem Saborear</h1>
+        <p>Os pastéis mais crocantes da cidade!</p>
+    </header>
+    <nav>
+        <a href="#cardapio">Cardápio</a>
+        <a href="#pedido">Fazer Pedido</a>
+    </nav>
+    <div class="container">
+        <section id="cardapio" class="cardapio">
+            <h2>Cardápio</h2>
+            <div class="item">
+                <span>Pastel de Carne</span>
+                <span>R$ 12,00</span>
+            </div>
+            <div class="item">
+                <span>Pastel de Queijo</span>
+                <span>R$ 12,00</span>
+            </div>
+            <div class="item">
+                <span>Pastel de Frango com Catupiry</span>
+                <span>R$ 12,00</span>
+            </div>
+            <div class="item">
+                <span>Pastel de Pizza</span>
+                <span>R$ 12,00</span>
+            </div>
+            <div class="item">
+                <span>Pastel Doce (Chocolate)</span>
+                <span>R$ 12,00</span>
+            </div>
+        </section>
+        <section id="pedido" class="pedido">
+            <h2>Fazer Pedido pelo WhatsApp</h2>
+            <form id="pedidoForm">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+                
+                <label for="pastel">Escolha seu Pastel:</label>
+                <select id="pastel" name="pastel" required>
+                    <option value="">Selecione</option>
+                    <option value="Carne - R$ 12,00">Pastel de Carne - R$12,00</option>
+                    <option value="Queijo - R$ 12,00">Pastel de Queijo - R$12,00</option>
+                    <option value="Frango com Catupiry - R$ 12,00">Pastel de Frango com Catupiry - R$ 12,00</option>
+                    <option value="Pizza - R$ 12,00">Pastel de Pizza - R$ 12,00</option>
+                    <option value="Chocolate - R$ 12,00">Pastel Doce (Chocolate) - R$ 12,00</option>
+                </select>
+                
+                <label for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" name="quantidade" min="1" required>
+                
+                <label for="endereco">Endereço completo de Entrega:</label>
+                <input type="text" id="endereco" name="endereco" required>
+                
+                <button type="submit">Enviar Pedido pelo WhatsApp</button>
+            </form>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2025 Vem Saborear. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById('pedidoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const pastel = document.getElementById('pastel').value;
+            const quantidade = document.getElementById('quantidade').value;
+            const endereco = document.getElementById('endereco').value;
+            
+            // Número do WhatsApp da pastelaria (substitua pelo número real, no formato internacional)
+            const numeroWhatsApp = "+5511968236045";
+            const mensagem = `Olá! Meu nome é ${nome}. Gostaria de pedir ${quantidade} pastel(is) de ${pastel}. Entregar em: ${endereco}`;
+            const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            
+            // Redireciona para o WhatsApp
+            window.open(url, '_blank');
+            
+            // Reseta o formulário
+            this.reset();
+        });
+    </script>
+</body>
+</html>
