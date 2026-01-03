@@ -57,21 +57,16 @@
             border-bottom: none;
         }
         .pastel-item {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: end;
-        }
-        .pastel-item select, .pastel-item input {
-            flex: 1;
+            margin-bottom: 15px;
         }
         .remove-btn {
             background-color: #CC0000;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
         form {
             display: flex;
@@ -82,6 +77,7 @@
             padding: 10px;
             border: 1px solid #FF0000;
             border-radius: 5px;
+            font-size: 16px;
         }
         button {
             background-color: #FF0000;
@@ -136,30 +132,57 @@
                 <span>R$ 10,00</span>
             </div>
         </section>
-
         <section id="pedido" class="pedido">
             <h2>Fazer Pedido pelo WhatsApp</h2>
             <form id="pedidoForm">
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" required>
 
-                <label>Selecione os pastéis desejados:</label>
+                <label>Selecione os pastéis desejados (quantidade de cada sabor):</label>
                 <div id="pasteis-container">
-                    <!-- Primeiro pastel já vem carregado -->
+                    <!-- Primeiro item já vem carregado -->
                     <div class="pastel-item">
-                        <select class="sabor" required>
-                            <option value="">Selecione o sabor</option>
-                            <option value="Pizza">Pizza - R$ 10,00</option>
-                            <option value="Carne">Carne - R$ 10,00</option>
-                            <option value="Carne com Queijo">Carne com Queijo - R$ 10,00</option>
-                            <option value="Bauru">Bauru - R$ 10,00</option>
-                            <option value="Calabresa com Queijo">Calabresa com Queijo - R$ 10,00</option>
+                        <select class="pedido-sabor" required>
+                            <option value="">Selecione sabor e quantidade</option>
+                            <option value="0">Nenhum</option>
+                            <optgroup label="Pizza">
+                                <option value="1 Pizza">1 Pastel de Pizza</option>
+                                <option value="2 Pizza">2 Pastéis de Pizza</option>
+                                <option value="3 Pizza">3 Pastéis de Pizza</option>
+                                <option value="4 Pizza">4 Pastéis de Pizza</option>
+                                <option value="5 Pizza">5 Pastéis de Pizza</option>
+                                <option value="6 Pizza">6 Pastéis de Pizza</option>
+                                <option value="7 Pizza">7 Pastéis de Pizza</option>
+                                <option value="8 Pizza">8 Pastéis de Pizza</option>
+                                <option value="9 Pizza">9 Pastéis de Pizza</option>
+                                <option value="10 Pizza">10 Pastéis de Pizza</option>
+                            </optgroup>
+                            <optgroup label="Carne">
+                                <option value="1 Carne">1 Pastel de Carne</option>
+                                <option value="2 Carne">2 Pastéis de Carne</option>
+                                <!-- ... até 10 -->
+                                <option value="10 Carne">10 Pastéis de Carne</option>
+                            </optgroup>
+                            <optgroup label="Carne com Queijo">
+                                <option value="1 Carne com Queijo">1 Pastel de Carne com Queijo</option>
+                                <!-- ... -->
+                                <option value="10 Carne com Queijo">10 Pastéis de Carne com Queijo</option>
+                            </optgroup>
+                            <optgroup label="Bauru">
+                                <option value="1 Bauru">1 Pastel de Bauru</option>
+                                <!-- ... -->
+                                <option value="10 Bauru">10 Pastéis de Bauru</option>
+                            </optgroup>
+                            <optgroup label="Calabresa com Queijo">
+                                <option value="1 Calabresa com Queijo">1 Pastel de Calabresa com Queijo</option>
+                                <!-- ... -->
+                                <option value="10 Calabresa com Queijo">10 Pastéis de Calabresa com Queijo</option>
+                            </optgroup>
                         </select>
-                        <input type="number" class="quantidade" min="1" placeholder="Quantidade" required>
-                        <button type="button" class="remove-btn" onclick="removerPastel(this)">Remover</button>
+                        <button type="button" class="remove-btn" onclick="removerPastel(this)">Remover linha</button>
                     </div>
                 </div>
-                <button type="button" onclick="adicionarPastel()">+ Adicionar outro pastel</button>
+                <button type="button" onclick="adicionarPastel()">+ Adicionar outra linha de pedido</button>
 
                 <label for="endereco">Endereço completo de Entrega:</label>
                 <input type="text" id="endereco" name="endereco" required>
@@ -168,7 +191,6 @@
             </form>
         </section>
     </div>
-
     <footer>
         <p>&copy; 2025 Vem Saborear. Todos os direitos reservados.</p>
     </footer>
@@ -178,23 +200,13 @@
             const container = document.getElementById('pasteis-container');
             const novoItem = document.createElement('div');
             novoItem.className = 'pastel-item';
-            novoItem.innerHTML = `
-                <select class="sabor" required>
-                    <option value="">Selecione o sabor</option>
-                    <option value="Pizza">Pizza - R$ 10,00</option>
-                    <option value="Carne">Carne - R$ 10,00</option>
-                    <option value="Carne com Queijo">Carne com Queijo - R$ 10,00</option>
-                    <option value="Bauru">Bauru - R$ 10,00</option>
-                    <option value="Calabresa com Queijo">Calabresa com Queijo - R$ 10,00</option>
-                </select>
-                <input type="number" class="quantidade" min="1" placeholder="Quantidade" required>
-                <button type="button" class="remove-btn" onclick="removerPastel(this)">Remover</button>
-            `;
+            novoItem.innerHTML = container.querySelector('.pastel-item').innerHTML; // copia o select completo
             container.appendChild(novoItem);
+            // Limpa o valor do novo select
+            novoItem.querySelector('select').value = '';
         }
 
         function removerPastel(botao) {
-            // Não permite remover o último (para sempre ter pelo menos um campo)
             if (document.querySelectorAll('.pastel-item').length > 1) {
                 botao.parentElement.remove();
             }
@@ -203,43 +215,39 @@
         document.getElementById('pedidoForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const nome = document.getElementById('nome').value;
-            const endereco = document.getElementById('endereco').value;
-            const itens = document.querySelectorAll('.pastel-item');
+            const nome = document.getElementById('nome').value.trim();
+            const endereco = document.getElementById('endereco').value.trim();
 
             let listaPedidos = '';
             let temItemValido = false;
 
-            itens.forEach(item => {
-                const sabor = item.querySelector('.sabor').value;
-                const qtd = item.querySelector('.quantidade').value;
-                if (sabor && qtd > 0) {
-                    listaPedidos += `${qtd} pastel(is) de ${sabor}\n`;
+            document.querySelectorAll('.pedido-sabor').forEach(select => {
+                const valor = select.value.trim();
+                if (valor && valor !== '' && !valor.startsWith('0')) {
+                    const [quantidade, ...saborArr] = valor.split(' ');
+                    const sabor = saborArr.join(' ');
+                    listaPedidos += `${quantidade} pastel(is) de ${sabor}\n`;
                     temItemValido = true;
                 }
             });
 
             if (!temItemValido) {
-                alert('Por favor, selecione pelo menos um pastel com quantidade válida.');
+                alert('Por favor, selecione pelo menos um pastel.');
                 return;
             }
 
-            const numeroWhatsApp = "+5511968236045"; // Substitua se necessário
+            const numeroWhatsApp = "+5511968236045"; // Altere se necessário
             const mensagem = `Olá! Meu nome é ${nome}.\n\nGostaria de pedir:\n${listaPedidos}\nEntregar em: ${endereco}`;
             const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-
             window.open(url, '_blank');
 
-            // Reseta o formulário
+            // Reset do formulário
             this.reset();
-            // Remove itens extras, deixando apenas o primeiro
             const container = document.getElementById('pasteis-container');
             while (container.children.length > 1) {
                 container.removeChild(container.lastChild);
             }
-            // Limpa os campos do primeiro item
-            container.querySelector('.sabor').value = '';
-            container.querySelector('.quantidade').value = '';
+            container.querySelector('.pedido-sabor').value = '';
         });
     </script>
 </body>
